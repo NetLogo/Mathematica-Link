@@ -14,7 +14,7 @@ A Makefile is provided.  You'll need to have a copy of NLink.jar from the Mathem
 
 The primary developer of the NetLogo-Mathematica link was Eytan Bakshy.
 
-To refer to this package in academic publications, please use: Bakshy, E., Wilensky, U. (2007). NetLogo-Mathematica Link. http://ccl.northwestern.edu/netlogo/mathematica.html. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
+To refer to this package in academic publications, please use: Bakshy, E., Wilensky, U. (2007). NetLogo-Mathematica Link. http://ccl.northwestern.edu/netlogo/mathematica.html . Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
 
 ## Terms of Use
 
