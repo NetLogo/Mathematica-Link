@@ -10,6 +10,12 @@ The Mathematica Link comes with NetLogo.  For more information, see the NetLogo 
 
 A Makefile is provided.  You'll need to have a copy of NLink.jar from the Mathematica installation in order to build. If compilation succeeds, `NLink.class` and several other `.class` files will be created.
 
+## Credits
+
+The primary developer of the NetLogo-Mathematica link was Eytan Bakshy.
+
+To refer to this package in academic publications, please use: Bakshy, E., Wilensky, U. (2007). NetLogo-Mathematica Link. http://ccl.northwestern.edu/netlogo/mathematica.html. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
+
 ## Terms of Use
 
 All contents © 2007-2011 Uri Wilensky.
