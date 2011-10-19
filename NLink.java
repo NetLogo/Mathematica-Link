@@ -1,9 +1,3 @@
-// (C) 2007-2011 Uri Wilensky. This code may be freely copied, distributed,
-// altered, or otherwise used by anyone for any legal purpose.
-
-// To compile this code, you need to have NetLogo.jar (included with
-// NetLogo) and JLink.jar (included with Mathematica) in the classpath.
-
 import com.wolfram.jlink.*;
 import org.nlogo.headless.HeadlessWorkspace;
 import org.nlogo.api.CompilerException;

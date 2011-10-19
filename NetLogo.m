@@ -1,8 +1,5 @@
 (* ::Package:: *)
 
-(* (C) 2007 Uri Wilensky. This code may be freely copied, distributed, *)
-(* altered, or otherwise used by anyone for any legal purpose.         *)
-
 BeginPackage["NetLogo`",{"JLink`"}]
 
 SetAttributes[Headless, Protected];
