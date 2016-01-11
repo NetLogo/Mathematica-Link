@@ -1,2 +1,5 @@
 /JLink.jar
 /*.class
+/target/
+/project/target
+/project/project
