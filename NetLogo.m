@@ -210,21 +210,25 @@ NLGetPatches[patchVariable_] := Partition[NLReport["map [["<>patchVariable<>"] o
 Clear[NLStart];
 Options[NLStart] = {Headless -> False};
 
+NLJarPaths[nlPath_] :=
+  Module[{NLPath = nlPath, NLJarDir = If[StringMatchQ[$System,"*Mac*"], FileNameJoin[{nlPath,"Java"}], FileNameJoin[{nlPath,"app"}]]},
+    List[FileNameJoin[{NLJarDir, "NetLogo.jar"}], FileNameJoin[{NLPath,"Mathematica Link","mathematica-link.jar"}]]];
+
 NLStart[opts:OptionsPattern[]] := NLStart[$NLHome] /; ValueQ[$NLHome];
 NLStart[opts:OptionsPattern[]] := NLStart[""] /; !ValueQ[$NLHome];
 
-NLStart[NetLogoPath_String, opts:OptionsPattern[]] := 
+NLStart[NetLogoPath_String, opts:OptionsPattern[]] :=
   Module[{NLPath = NetLogoPath, alreadySetPathQ = False},
 	(* No NetLogo path specified: ask user to locate path *)
-	If[ NLPath == "", 
+	If[ NLPath == "",
 		NLPath = SystemDialogInput["Directory", WindowTitle->"Please locate your NetLogo installation directory"];
 		alreadySetPathQ = True;
 	];
 
 	(* NetLogo path specified is bogus in some way *)
-	If[!alreadySetPathQ && FileNames[ToFileName[{NLPath, "Mathematica Link"},"NLink.class"]] == {}
+	If[!alreadySetPathQ && !AllTrue[NLJarPaths[NLPath], FileExistsQ]
 		&& ChoiceDialog["Mathematica could not find your NetLogo installation directory in: "<> NLPath <> ". Would you like to locate it?"],
-				NLPath = SystemDialogInput["Directory", WindowTitle->"Please locate your NetLogo installation directory"];
+        NLPath = SystemDialogInput["Directory", WindowTitle->"Please locate your NetLogo installation directory"];
 	];
 
 	If[NLPath == $Canceled, (* throw error and return if user does not specify a path *)
@@ -233,22 +237,21 @@ NLStart[NetLogoPath_String, opts:OptionsPattern[]] :=
 	];
 
 	(* Report back error for users that still cannot get cannot find the right path *)
-	If[FileNames[ToFileName[{NLPath, "Mathematica Link"},"NLink.class"]] === {},
+	If[! AllTrue[NLJarPaths[NLPath], FileExistsQ],
 		Message[NLStart::netlogonotfound, NLPath];
 		Return[$Failed];
 	];
 
 	(* Reinitialize NLink *)
-	$NLHome = NLPath; (* only set after all paths are legit *) 
+  (* only set after all paths are legit *)
+	$NLHome = NLPath;
 	UninstallJava[];
-	AddToClassPath[ToFileName[NLPath,"NetLogo.jar"], ToFileName[{NLPath, "Mathematica Link"}]];
-	If[StringMatchQ[$System,"*Mac*"], ToFileName[{NLPath, "lib"},"mrjadapter-1.2.jar"]];
+	Apply[AddToClassPath, NLJarPaths[NLPath]];
 	InstallJava[FilterRules[{opts}, Options[InstallJava]]];
 	NLink = JavaNew[LoadJavaClass["NLink"], ! OptionValue[Headless]];
 ];
 
 NLQuit[] := UninstallJava[];
-
 
 End[]
 
