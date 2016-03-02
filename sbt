@@ -6,28 +6,26 @@
 # an intermediary JH variable --JAB (3/22/13)
 if [[ `uname -s` == *CYGWIN* ]] ; then
   CURR_DIR="$( cd "$( dirname "$0" )" && pwd )"
-  JH=`cygpath -up "C:\Program Files\Java\jdk1.6.0_45"`
+  JH=`cygpath -up "\Java\jdk1.8.0_31"`
 else
   CURR_DIR=`dirname $0`
   if [ `uname -s` = Linux ] ; then
-    if [ -a /usr/lib/jvm/java-6-sun ] ; then
-      export JAVA_HOME=/usr/lib/jvm/java-6-sun
-    elif [ -a /usr/lib/jvm/jdk1.6.0_45 ] ; then
-      export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
-    elif ! $JAVA_HOME/bin/java -version 2>&1 | head -n 1 | grep "1\.6" >> /dev/null ; then
-      echo "Please set JAVA_HOME to version 1.6"
+    HIGHEST_PRIORITY_JAVA_8=`update-alternatives --display javac | grep priority | grep 1.8 | sort -k 4 | tail -1 | cut -d\  -f1`
+    if [ -e "$HIGHEST_PRIORITY_JAVA_8" ] ; then
+      export JAVA_HOME="${HIGHEST_PRIORITY_JAVA_8%/bin/javac}"
+    elif ! $JAVA_HOME/bin/java -version 2>&1 | head -n 1 | grep "1\.8" >> /dev/null ; then
+      echo "Please set JAVA_HOME to version 1.8"
       exit
     fi
   else
     if [ `uname -s` = Darwin ] ; then
-      export JAVA_HOME=`/usr/libexec/java_home -F -v1.6*`
+      export JAVA_HOME=`/usr/libexec/java_home -F -v1.8*`
     else
       export JAVA_HOME=/usr
     fi
   fi
   JH=$JAVA_HOME
 fi
-
 
 export PATH=$JH/bin:$PATH
 JAVA=$JH/bin/java
@@ -38,7 +36,7 @@ fi
 # Most of these settings are fine for everyone
 XSS=-Xss10m
 XMX=-Xmx1900m
-XX=-XX:MaxPermSize=256m
+XX=
 ENCODING=-Dfile.encoding=UTF-8
 HEADLESS=-Djava.awt.headless=true
 USE_QUARTZ=-Dapple.awt.graphics.UseQuartz=false

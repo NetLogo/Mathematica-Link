@@ -1,9 +1,9 @@
 import com.wolfram.jlink.*;
 import org.nlogo.headless.HeadlessWorkspace;
-import org.nlogo.api.CompilerException;
+import org.nlogo.core.CompilerException;
+import org.nlogo.core.LogoList;
 import org.nlogo.nvm.EngineException;
 import org.nlogo.api.LogoException;
-import org.nlogo.api.LogoList;
 import org.nlogo.app.App;
 import java.awt.EventQueue;
 
@@ -12,7 +12,7 @@ public class NLink {
   private org.nlogo.workspace.Controllable workspace = null;
   private java.io.IOException caughtEx = null;
   private boolean isGUIworkspace;
-   
+
   public NLink(boolean isGUImode)
   {
     isGUIworkspace = isGUImode;
