@@ -212,7 +212,7 @@ Options[NLStart] = {Headless -> False};
 
 NLJarPaths[nlPath_] :=
   Module[{NLPath = nlPath, NLJarDir = If[StringMatchQ[$System,"*Mac*"], FileNameJoin[{nlPath,"Java"}], FileNameJoin[{nlPath,"app"}]]},
-    List[FileNameJoin[{NLJarDir, "NetLogo.jar"}], FileNameJoin[{NLPath,"Mathematica Link","mathematica-link.jar"}]]];
+    List[SelectFirst[FileNames["netlogo-*.jar", NLJarDir], Not @* StringContainsQ["mac"]], FileNameJoin[{NLPath,"Mathematica Link","mathematica-link.jar"}]]];
 
 NLStart[opts:OptionsPattern[]] := NLStart[$NLHome] /; ValueQ[$NLHome];
 NLStart[opts:OptionsPattern[]] := NLStart[""] /; !ValueQ[$NLHome];

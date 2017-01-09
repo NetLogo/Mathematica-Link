@@ -19,8 +19,8 @@ public class NLink {
     if( isGUImode ) {
       App.main( new String[] { } ) ;
       workspace = App.app();
-      org.nlogo.util.Exceptions.setHandler
-        ( new org.nlogo.util.Exceptions.Handler() {
+      org.nlogo.api.Exceptions.setHandler
+        ( new org.nlogo.api.Exceptions.Handler() {
             public void handle( Throwable t ) {
               throw new RuntimeException(t.getMessage());
             } } );
