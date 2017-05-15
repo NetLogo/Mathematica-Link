@@ -215,12 +215,16 @@ NLGetGraph[] := NLGetGraph["links"];
 
 NLGetPatches[patchVariable_] := Partition[NLReport["map [["<>patchVariable<>"] of ?] sort patches"],Floor[NLReport["world-width"]]];
 
+Clear[NLJarPaths];
+Clear[NLDiagnostics];
+Clear[NLJavaDiagnostics];
 Clear[NLStart];
-Options[NLStart] = {Headless -> False};
 
 NLJarPaths[nlPath_] :=
   Module[{NLPath = nlPath, NLJarDir = If[StringMatchQ[$System,"*Mac*"], FileNameJoin[{nlPath,"Java"}], FileNameJoin[{nlPath,"app"}]]},
     List[SelectFirst[FileNames["netlogo-*.jar", NLJarDir], Not @* StringContainsQ["mac"]], FileNameJoin[{NLPath,"Mathematica Link","mathematica-link.jar"}]]];
+
+Options[NLStart] = {Headless -> False};
 
 NLStart[opts:OptionsPattern[]] := NLStart[$NLHome] /; ValueQ[$NLHome];
 NLStart[opts:OptionsPattern[]] := NLStart[""] /; !ValueQ[$NLHome];
@@ -270,6 +274,7 @@ NLDiagnostics[NetLogoPath_String] :=
     ]
   ];
 
+
 NLJavaDiagnostics[opts:OptionsPattern[]] :=
   Module[{},
     UninstallJava[];
@@ -278,7 +283,7 @@ NLJavaDiagnostics[opts:OptionsPattern[]] :=
 
     <| "javaVersion" -> System`getProperty["java.version"],
        "javaArchitecture" -> System`getProperty["sun.arch.data.model"] |>
-  ]
+  ];
 
 NLQuit[] := UninstallJava[];
 
