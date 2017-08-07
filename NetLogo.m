@@ -185,7 +185,7 @@ HandleNLExceptions[NLFunction_]:= Block[{exString, javaException, $JavaException
 
 NLLoadModel::notfound = "The model located at `1` could not be found";
 NLStart::netlogonotfound = "NetLogo could not be found in: `1`";
-NLStart::nopath = "NetLogo cannot be started without a valid NetLogo 6.0.1 path";
+NLStart::nopath = "NetLogo cannot be started without a valid NetLogo 6.0.2 path";
 
 NLLoadModel[path_String] := If[FileNames[path] == {},
 	Message[NLLoadModel::notfound, path];,
@@ -213,7 +213,7 @@ NLGetGraph[linkAgentSet_String] := (#[[1]] -> #[[2]]) & /@
     (Floor/@NLReport["[list ([who] of end1) ([who] of end2)] of "<>linkAgentSet]);
 NLGetGraph[] := NLGetGraph["links"];
 
-NLGetPatches[patchVariable_] := Partition[NLReport["map [["<>patchVariable<>"] of ?] sort patches"],Floor[NLReport["world-width"]]];
+NLGetPatches[patchVariable_] := Partition[NLReport["map [ [p] -> ["<>patchVariable<>"] of p ] sort patches"],Floor[NLReport["world-width"]]];
 
 Clear[NLJarPaths];
 Clear[NLDiagnostics];
