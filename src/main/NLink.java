@@ -26,7 +26,7 @@ public class NLink {
             } } );
     }
     else
-      workspace = HeadlessWorkspace.newInstance() ;
+      workspace = HeadlessWorkspace.newInstance(false) ;
   }
 
   public void loadModel(final String path)
@@ -55,7 +55,7 @@ public class NLink {
       try {
         if (workspace != null)
           ((HeadlessWorkspace)workspace).dispose();
-        workspace = HeadlessWorkspace.newInstance() ;
+        workspace = HeadlessWorkspace.newInstance(false) ;
         workspace.open(path);
       }
       // if we cannot open a NetLogo model for some reason, throw an exception
@@ -63,7 +63,7 @@ public class NLink {
       catch( java.io.IOException ex) {
         if (workspace != null)
           ((HeadlessWorkspace)workspace).dispose();
-        workspace = HeadlessWorkspace.newInstance() ;
+        workspace = HeadlessWorkspace.newInstance(false) ;
         throw ex;
       }
     }
