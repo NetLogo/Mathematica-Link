@@ -9,7 +9,9 @@ javacOptions ++=
 
 val netLogoVersion = settingKey[String]("version of NetLogo to depend on")
 
-netLogoVersion := "6.0.0"
+val updateVersions = taskKey[Unit]("Update key files with appropriate NetLogo version")
+
+netLogoVersion := "6.1.0"
 
 artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
   "mathematica-link.jar"
@@ -49,6 +51,38 @@ val netLogoDep = {
         "org.nlogo" % "netlogo" % netLogoVersion.value % "test" intransitive() classifier "tests"))
   }
 }
+
+Keys.commands +=
+  Command.command("updateVersions") { (state) =>
+    import java.util.regex.Pattern
+    import scala.util.matching.Regex
+    val extracted = Project extract state
+    val baseDir = extracted.get(baseDirectory)
+    val files = Seq(
+      baseDir / "NetLogo.m",
+      baseDir / "NetLogo-Mathematica Tutorial.nb")
+
+    val versionDecl = new Regex("""\(\* NetLogoVersion="(.*)" \*\)""")
+    val eolWsRegex = new Regex("""\s*\z""")
+    def versionReplace(versionNum: String) = new Regex(Pattern.quote(versionNum))
+    val newNlVersion = extracted.get(netLogoVersion)
+
+    files.foreach { f =>
+      val lines = IO.readLines(f)
+      val (_, newLines) =
+        lines.foldLeft((Option.empty[Regex], Seq.empty[String])) {
+          case ((None, acc), versionDecl(vNum)) =>
+            val replaceRegex = versionReplace(vNum)
+            (Some(replaceRegex), s"""(* NetLogoVersion="${newNlVersion}" *)""" +: acc)
+          case ((r@Some(replaceRegex), acc), s) if replaceRegex.findFirstIn(s).nonEmpty =>
+            (r, replaceRegex.replaceAllIn(s, newNlVersion) +: acc)
+          case ((r, acc), s) => (r, s +: acc)
+        }
+      val linesToWrite = newLines.reverse.map(l => eolWsRegex.replaceAllIn(l, ""))
+      IO.writeLines(f, linesToWrite)
+    }
+    state
+  }
 
 netLogoDep
 
