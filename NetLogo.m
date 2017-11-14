@@ -126,6 +126,10 @@ Pass the desired home directory to it as an argument to see where it's looking f
 NLJavaDiagnostics::usage = \
 "NLJavaDiagnostics[] returns information about the java environment used in running NetLogo";
 
+NLCacheLocations::usage = \
+"NLCacheLocations[] returns the a list containing the locations of any cached versions of the NetLogo Mathematica Link library.
+Combine with DeleteFile[] and reinstallation to ensure you are using the latest version";
+
 
 Options[NLStart] = {Headless -> False};
 (*$MessagePrePrint=.*)
@@ -217,6 +221,7 @@ NLGetPatches[patchVariable_] := Partition[NLReport["map [ [p] -> ["<>patchVariab
 
 Clear[NLJarPaths];
 Clear[NLDiagnostics];
+Clear[NLCacheLocations];
 Clear[NLJavaDiagnostics];
 Clear[NLStart];
 
@@ -284,6 +289,12 @@ NLJavaDiagnostics[opts:OptionsPattern[]] :=
     <| "javaVersion" -> System`getProperty["java.version"],
        "javaArchitecture" -> System`getProperty["sun.arch.data.model"] |>
   ];
+
+NLCacheLocations[] :=
+    Select[{
+      FileNameJoin[{$BaseDirectory, "Applications", "NetLogo.m"}],
+      FileNameJoin[{$UserBaseDirectory, "Applications", "NetLogo.m"}]},
+    FileExistsQ];
 
 NLQuit[] := UninstallJava[];
 
