@@ -8,7 +8,7 @@ The Mathematica Link comes with NetLogo.  For more information, see the NetLogo 
 
 ## Building
 
-A Makefile is provided.  You'll need to have a copy of NLink.jar from the Mathematica installation in order to build. If compilation succeeds, `NLink.class` and several other `.class` files will be created.
+A `build.sbt` file is provided.  You'll need to have a copy of JLink.jar from the Mathematica installation in order to build. If compilation succeeds, `NLink.class` and several other `.class` files will be created.
 
 ## Credits
 
