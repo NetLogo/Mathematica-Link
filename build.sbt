@@ -9,7 +9,7 @@ javacOptions ++=
 
 val netLogoVersion = settingKey[String]("version of NetLogo to depend on")
 
-netLogoVersion := "6.0.0"
+netLogoVersion := "6.1.0"
 
 artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
   "mathematica-link.jar"
@@ -37,7 +37,7 @@ val netLogoDep = {
           Seq(libraryDependencies ++= Seq(
             "org.nlogo" % "NetLogo" % version changing() from url,
             "org.nlogo" % "NetLogo-tests" % version changing() from testUrl,
-            "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3"
+            "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5"
           ))
       }
 
@@ -53,5 +53,5 @@ val netLogoDep = {
 netLogoDep
 
 libraryDependencies +=
-  "com.wolfram.jlink" % "JLink" % "10.3.0" from
+  "com.wolfram.jlink" % "JLink" % "10.3.1" from
     "file:///Applications/Mathematica.app/Contents/SystemFiles/Links/JLink/JLink.jar"

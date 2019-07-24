@@ -35,11 +35,11 @@ public class NLink {
     caughtEx = null;
     if ( isGUIworkspace ) {
       try {
-        EventQueue.invokeAndWait ( 
+        EventQueue.invokeAndWait (
           new Runnable() {
             public void run() {
               try
-              { App.app().open(path); }
+              { App.app().open(path, true); }
               catch( java.io.IOException ex)
               { caughtEx = ex; }
             } } );
@@ -56,7 +56,7 @@ public class NLink {
         if (workspace != null)
           ((HeadlessWorkspace)workspace).dispose();
         workspace = HeadlessWorkspace.newInstance() ;
-        workspace.open(path);
+        workspace.open(path, true);
       }
       // if we cannot open a NetLogo model for some reason, throw an exception
       // and start a new workspace
@@ -142,7 +142,7 @@ public class NLink {
     Object[] objArray = varList.toArray();
     Expr[] exprArray = new Expr[objArray.length];
     for (int j=0; j < exprArray.length; j++)
-      exprArray[j] = (Expr)objArray[j]; 
+      exprArray[j] = (Expr)objArray[j];
     return (new Expr(new Expr(Expr.SYMBOL, "List"), exprArray));
   }
 
