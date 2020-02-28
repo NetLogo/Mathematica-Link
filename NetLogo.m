@@ -6,6 +6,8 @@ SetAttributes[Headless, Protected];
 
 $NLHome = "";
 
+JLink`InstallJava`Private`$disablePrefs = False;
+
 Headless::usage := "Headless is an option for  NLStart[] that specifies whether or not NetLogo should be run with a graphical interface.  By default, Headless is False."
 
 NLStart::usage := "NLStart[NetLogoHome] starts the J/Link interface and launches the version of NetLogo (6.1 or later) installed in the directory NetLogoHome. By default, the NetLogo-Mathematica Link runs in GUI-mode. By specifying the option Headless->True, NetLogo may operate in headless mode. This is recommended for conducting large experiments";
