@@ -11,7 +11,7 @@ javacOptions ++=
 
 val netLogoVersion = settingKey[String]("version of NetLogo to depend on")
 
-netLogoVersion := "6.1.0"
+netLogoVersion := "6.1.1-c82c397"
 
 artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
   "mathematica-link.jar"
