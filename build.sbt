@@ -1,3 +1,5 @@
+import java.nio.file.{ Files, Paths }
+
 name := "Mathematica-Link"
 
 javaSource in Compile := baseDirectory.value / "src" / "main"
@@ -55,5 +57,21 @@ val netLogoDep = {
 netLogoDep
 
 libraryDependencies +=
-  "com.wolfram.jlink" % "JLink" % "10.3.1" from
-    "file:///Applications/Mathematica.app/Contents/SystemFiles/Links/JLink/JLink.jar"
+  "com.wolfram.jlink" % "JLink" % "10.3.1" from s"file:///${(baseDirectory.value / "JLink.jar").toString}"
+
+lazy val copyJLinkJar = taskKey[Unit]("copies the JLink.jar to local for easier builds")
+
+copyJLinkJar := {
+  // We could update this to switch to the Windows path when necessary, but this should work fine if we're
+  // building out of the same folder for NetLogo releases.  -Jeremy B November 2020
+  val jLinkJarDestPath = (baseDirectory.value / "JLink.jar").toPath
+  if (!Files.exists(jLinkJarDestPath)) {
+    val jLinkJarSourcePath = Paths.get("/Applications/Mathematica.app/Contents/SystemFiles/Links/JLink/JLink.jar")
+    if (!Files.exists(jLinkJarSourcePath)) {
+      throw new Exception(s"JLink.jar not found, is Mathematica installed? ($jLinkJarSourcePath)")
+    }
+    Files.copy(jLinkJarSourcePath, jLinkJarDestPath)
+  }
+}
+
+update := (update dependsOn copyJLinkJar).value
