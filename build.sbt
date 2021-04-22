@@ -13,7 +13,7 @@ javacOptions ++=
 
 val netLogoVersion = settingKey[String]("version of NetLogo to depend on")
 
-netLogoVersion := "6.1.1-c82c397"
+netLogoVersion := "6.2.0-d27b502"
 
 artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
   "mathematica-link.jar"
@@ -47,7 +47,7 @@ val netLogoDep = {
 
   (netLogoJarFile orElse netLogoJarURL).getOrElse {
     Seq(
-      resolvers += Resolver.bintrayRepo("content/netlogo", "NetLogo-JVM"),
+      resolvers += "netlogo" at "https://dl.cloudsmith.io/public/netlogo/netlogo/maven/",
       libraryDependencies ++= Seq(
         "org.nlogo" % "netlogo" % netLogoVersion.value intransitive,
         "org.nlogo" % "netlogo" % netLogoVersion.value % "test" intransitive() classifier "tests"))
