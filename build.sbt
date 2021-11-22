@@ -6,7 +6,7 @@ javaSource in Compile := baseDirectory.value / "src" / "main"
 
 crossPaths := false
 
-version := "6.1.1"
+version := "6.1.2"
 
 javacOptions ++=
   "-g -deprecation -encoding us-ascii -Werror -Xlint:all -Xlint:-serial -Xlint:-fallthrough -Xlint:-path -source 1.8 -target 1.8".split(" ").toSeq
