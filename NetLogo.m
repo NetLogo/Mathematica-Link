@@ -226,7 +226,7 @@ NLJarPaths[nlPath_] :=
   Module[{NLPath = nlPath, NLJarDir = If[StringMatchQ[$System,"*Mac*"], FileNameJoin[{nlPath,"Java"}], FileNameJoin[{nlPath,"app"}]]},
     List[SelectFirst[FileNames["netlogo-*.jar", NLJarDir], Not @* StringContainsQ["mac"]], FileNameJoin[{NLPath,"Mathematica Link","mathematica-link.jar"}]]];
 
-Options[NLStart] = {Headless -> False};
+Options[NLStart] = {Headless -> False, CommandLine -> Automatic};
 
 NLStart[opts:OptionsPattern[]] := NLStart[$NLHome] /; ValueQ[$NLHome];
 NLStart[opts:OptionsPattern[]] := NLStart[""] /; !ValueQ[$NLHome];
@@ -259,9 +259,8 @@ NLStart[NetLogoPath_String, opts:OptionsPattern[]] :=
 	(* Reinitialize NLink *)
   (* only set after all paths are legit *)
 	$NLHome = NLPath;
-	UninstallJava[];
 	Apply[AddToClassPath, NLJarPaths[NLPath]];
-	InstallJava[FilterRules[{opts}, Options[InstallJava]]];
+	ReinstallJava[FilterRules[{opts}, Options[ReinstallJava]]];
 	NLink = JavaNew[LoadJavaClass["NLink"], ! OptionValue[Headless]];
 ];
 
@@ -279,8 +278,7 @@ NLDiagnostics[NetLogoPath_String] :=
 
 NLJavaDiagnostics[opts:OptionsPattern[]] :=
   Module[{},
-    UninstallJava[];
-    InstallJava[FilterRules[{opts}, Options[InstallJava]]];
+    ReinstallJava[FilterRules[{opts}, Options[ReinstallJava]]];
     LoadJavaClass["java.lang.System"];
 
     <| "javaVersion" -> System`getProperty["java.version"],
