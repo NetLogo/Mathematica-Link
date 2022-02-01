@@ -9,7 +9,7 @@ crossPaths := false
 version := "6.1.2"
 
 javacOptions ++=
-  "-g -deprecation -encoding us-ascii -Werror -Xlint:all -Xlint:-serial -Xlint:-fallthrough -Xlint:-path -source 1.8 -target 1.8".split(" ").toSeq
+  "-g -deprecation -encoding us-ascii -Werror -Xlint:all -Xlint:-serial -Xlint:-fallthrough -Xlint:-path --release 11 ".split(" ").toSeq
 
 val netLogoVersion = settingKey[String]("version of NetLogo to depend on")
 
