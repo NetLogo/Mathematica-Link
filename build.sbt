@@ -66,9 +66,12 @@ copyJLinkJar := {
   // building out of the same folder for NetLogo releases.  -Jeremy B November 2020
   val jLinkJarDestPath = (baseDirectory.value / "JLink.jar").toPath
   if (!Files.exists(jLinkJarDestPath)) {
-    val jLinkJarSourcePath = Paths.get("/Applications/Mathematica.app/Contents/SystemFiles/Links/JLink/JLink.jar")
+    var jLinkJarSourcePath = Paths.get("/Applications/Mathematica.app/Contents/SystemFiles/Links/JLink/JLink.jar")
     if (!Files.exists(jLinkJarSourcePath)) {
-      throw new Exception(s"JLink.jar not found, is Mathematica installed? ($jLinkJarSourcePath)")
+      jLinkJarSourcePath = Paths.get("/Applications/Mathematica .app/Contents/SystemFiles/Links/JLink/JLink.jar")
+      if (!Files.exists(jLinkJarSourcePath)) {
+        throw new Exception(s"JLink.jar not found, is Mathematica installed? ($jLinkJarSourcePath)")
+      }
     }
     Files.copy(jLinkJarSourcePath, jLinkJarDestPath)
   }
