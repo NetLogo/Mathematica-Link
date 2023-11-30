@@ -1,4 +1,4 @@
-import java.nio.file.{ Files, Paths }
+import java.nio.file.{ Files, Path, Paths }
 
 name := "Mathematica-Link"
 
@@ -66,11 +66,14 @@ copyJLinkJar := {
   // building out of the same folder for NetLogo releases.  -Jeremy B November 2020
   val jLinkJarDestPath = (baseDirectory.value / "JLink.jar").toPath
   if (!Files.exists(jLinkJarDestPath)) {
-    val jLinkJarSourcePath = Paths.get("/Applications/Mathematica.app/Contents/SystemFiles/Links/JLink/JLink.jar")
-    if (!Files.exists(jLinkJarSourcePath)) {
-      throw new Exception(s"JLink.jar not found, is Mathematica installed? ($jLinkJarSourcePath)")
+    val jLinkJarSources = List("/Applications/Mathematica.app/Contents/SystemFiles/Links/JLink/JLink.jar",
+      "/Applications/Mathematica 2.app/Contents/SystemFiles/Links/JLink/JLink.jar")
+    val jLinkJarSourcePaths = jLinkJarSources.map(Paths.get(_))
+    val jLinkJarSourcePath: Option[Path] = jLinkJarSourcePaths.find(n => Files.exists(n))
+    jLinkJarSourcePath match {
+      case Some(s) => Files.copy(s, jLinkJarDestPath)
+      case _ => throw new Exception(s"JLink.jar not found, is Mathematica installed? (${jLinkJarSourcePaths.mkString(",")})")
     }
-    Files.copy(jLinkJarSourcePath, jLinkJarDestPath)
   }
 }
 
