@@ -2,18 +2,18 @@ import java.nio.file.{ Files, Path, Paths }
 
 name := "Mathematica-Link"
 
-javaSource in Compile := baseDirectory.value / "src" / "main"
+Compile / javaSource := baseDirectory.value / "src" / "main"
 
 crossPaths := false
 
-version := "6.1.2"
+version := "7.0.0"
 
 javacOptions ++=
   "-g -deprecation -encoding us-ascii -Werror -Xlint:all -Xlint:-serial -Xlint:-fallthrough -Xlint:-path --release 11 ".split(" ").toSeq
 
 val netLogoVersion = settingKey[String]("version of NetLogo to depend on")
 
-netLogoVersion := "6.2.0-d27b502"
+netLogoVersion := "7.0.0-beta1-c8d671e"
 
 artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
   "mathematica-link.jar"

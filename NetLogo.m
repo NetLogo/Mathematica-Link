@@ -187,7 +187,7 @@ HandleNLExceptions[NLFunction_]:= Block[{exString, javaException, $JavaException
 
 NLLoadModel::notfound = "The model located at `1` could not be found";
 NLStart::netlogonotfound = "NetLogo could not be found in: `1`";
-NLStart::nopath = "NetLogo cannot be started without a valid NetLogo 6.2 path";
+NLStart::nopath = "NetLogo cannot be started without a valid NetLogo path";
 
 NLLoadModel[path_String] := If[FileNames[path] == {},
 	Message[NLLoadModel::notfound, path];,
@@ -223,7 +223,7 @@ Clear[NLJavaDiagnostics];
 Clear[NLStart];
 
 NLJarPaths[nlPath_] :=
-  Module[{NLPath = nlPath, NLJarDir = If[StringMatchQ[$System,"*Mac*"], FileNameJoin[{nlPath,"Java"}], FileNameJoin[{nlPath,"app"}]]},
+  Module[{NLPath = nlPath, NLJarDir = FileNameJoin[{nlPath,"app"}]},
     List[SelectFirst[FileNames["netlogo-*.jar", NLJarDir], Not @* StringContainsQ["mac"]], FileNameJoin[{NLPath,"Mathematica Link","mathematica-link.jar"}]]];
 
 Options[NLStart] = {Headless -> False, CommandLine -> Automatic};
