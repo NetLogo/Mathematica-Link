@@ -11,9 +11,7 @@ version := "7.0.0"
 javacOptions ++=
   "-g -deprecation -encoding us-ascii -Werror -Xlint:all -Xlint:-serial -Xlint:-fallthrough -Xlint:-path --release 11 ".split(" ").toSeq
 
-val netLogoVersion = settingKey[String]("version of NetLogo to depend on")
-
-netLogoVersion := "7.0.0-beta1-c8d671e"
+val netLogoVersion = "7.0.0-beta1-c8d671e"
 
 artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
   "mathematica-link.jar"
@@ -26,7 +24,7 @@ val netLogoDep = {
       .map { f =>
         val jar = file(f)
         val testJar = file(f.replaceAllLiterally(".jar", "-tests.jar"))
-        Seq(unmanagedJars in Compile ++= Seq(jar, testJar))
+        Seq(Compile / unmanagedJars ++= Seq(jar, testJar))
       }
 
   val netLogoJarURL =
@@ -49,15 +47,15 @@ val netLogoDep = {
     Seq(
       resolvers += "netlogo" at "https://dl.cloudsmith.io/public/netlogo/netlogo/maven/",
       libraryDependencies ++= Seq(
-        "org.nlogo" % "netlogo" % netLogoVersion.value intransitive,
-        "org.nlogo" % "netlogo" % netLogoVersion.value % "test" intransitive() classifier "tests"))
+        "org.nlogo" % "netlogo" % netLogoVersion intransitive,
+        "org.nlogo" % "netlogo" % netLogoVersion % "test" intransitive() classifier "tests"))
   }
 }
 
 netLogoDep
 
 libraryDependencies +=
-  "com.wolfram.jlink" % "JLink" % "10.3.1" from s"file:///${(baseDirectory.value / "JLink.jar").toString}"
+  "com.wolfram.jlink" % "JLink" % "10.3.1" from s"file:///${(baseDirectory.value / "JLink.jar").toString.replaceAll("\\\\", "/")}"
 
 lazy val copyJLinkJar = taskKey[Unit]("copies the JLink.jar to local for easier builds")
 
