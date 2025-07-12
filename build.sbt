@@ -8,6 +8,8 @@ crossPaths := false
 
 version := "7.0.0"
 
+scalaVersion := "3.7.0"
+
 javacOptions ++=
   "-g -deprecation -encoding us-ascii -Werror -Xlint:all -Xlint:-serial -Xlint:-fallthrough -Xlint:-path --release 11 ".split(" ").toSeq
 
