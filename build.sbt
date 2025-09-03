@@ -13,7 +13,7 @@ scalaVersion := "3.7.0"
 javacOptions ++=
   "-g -deprecation -encoding us-ascii -Werror -Xlint:all -Xlint:-serial -Xlint:-fallthrough -Xlint:-path --release 11 ".split(" ").toSeq
 
-val netLogoVersion = "7.0.0-beta1-c8d671e"
+val netLogoVersion = "7.0.0-beta2-7e8f7a4"
 
 artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
   "mathematica-link.jar"
@@ -55,26 +55,3 @@ val netLogoDep = {
 }
 
 netLogoDep
-
-libraryDependencies +=
-  "com.wolfram.jlink" % "JLink" % "10.3.1" from s"file:///${(baseDirectory.value / "JLink.jar").toString.replaceAll("\\\\", "/")}"
-
-lazy val copyJLinkJar = taskKey[Unit]("copies the JLink.jar to local for easier builds")
-
-copyJLinkJar := {
-  // We could update this to switch to the Windows path when necessary, but this should work fine if we're
-  // building out of the same folder for NetLogo releases.  -Jeremy B November 2020
-  val jLinkJarDestPath = (baseDirectory.value / "JLink.jar").toPath
-  if (!Files.exists(jLinkJarDestPath)) {
-    val jLinkJarSources = List("/Applications/Mathematica.app/Contents/SystemFiles/Links/JLink/JLink.jar",
-      "/Applications/Mathematica 2.app/Contents/SystemFiles/Links/JLink/JLink.jar")
-    val jLinkJarSourcePaths = jLinkJarSources.map(Paths.get(_))
-    val jLinkJarSourcePath: Option[Path] = jLinkJarSourcePaths.find(n => Files.exists(n))
-    jLinkJarSourcePath match {
-      case Some(s) => Files.copy(s, jLinkJarDestPath)
-      case _ => throw new Exception(s"JLink.jar not found, is Mathematica installed? (${jLinkJarSourcePaths.mkString(",")})")
-    }
-  }
-}
-
-update := (update dependsOn copyJLinkJar).value
