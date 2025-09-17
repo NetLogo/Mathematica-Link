@@ -260,7 +260,7 @@ NLStart[NetLogoPath_String, opts:OptionsPattern[]] :=
   (* only set after all paths are legit *)
 	$NLHome = NLPath;
 	Apply[AddToClassPath, NLJarPaths[NLPath]];
-	ReinstallJava[FilterRules[{opts}, Options[ReinstallJava]]];
+	ReinstallJava[FilterRules[{opts, JVMArguments -> StringJoin["-Dnetlogo.extensions.dir=\"", FileNameJoin[NLPath, "extensions"], "\""]}, Options[ReinstallJava]]];
 	NLink = JavaNew[LoadJavaClass["NLink"], ! OptionValue[Headless]];
 ];
 
