@@ -11,7 +11,7 @@ version := "7.0.0"
 scalaVersion := "3.7.0"
 
 javacOptions ++=
-  "-g -deprecation -encoding us-ascii -Werror -Xlint:all -Xlint:-serial -Xlint:-fallthrough -Xlint:-path --release 11 ".split(" ").toSeq
+  "-g -deprecation -encoding us-ascii -Werror -Xlint:all -Xlint:-serial -Xlint:-fallthrough -Xlint:-path --release 17 ".split(" ").toSeq
 
 val netLogoVersion = "7.0.0-beta2-7e8f7a4"
 
